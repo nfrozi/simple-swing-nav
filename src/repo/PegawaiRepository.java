@@ -1,19 +1,18 @@
-package services;
+package repo;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Departemen;
 import model.Pegawai;
-import ui.PegawaiFrame;
 
-public class PegawaiService extends FrameService {
+public class PegawaiRepository {
 
 	private List<Pegawai> pegawaiList;
 
-	public PegawaiService() {
-		super(new PegawaiFrame());
+	public PegawaiRepository() {
 		pegawaiList = generatePegawaiList();
 	}
 	
@@ -35,21 +34,24 @@ public class PegawaiService extends FrameService {
 			pegawaiList.add(new Pegawai(
 				"123", 
 				"Agus", 
-				new SimpleDateFormat("dd/MM/yyyy").parse("01/01/1990"), 
+				new SimpleDateFormat("dd/MM/yyyy")
+					.parse("01/01/1990"), 
 				deptIt
 			));
 			
 			pegawaiList.add(new Pegawai(
 				"456", 
 				"Budi", 
-				new SimpleDateFormat("dd/MM/yyyy").parse("01/02/1991"), 
+				new SimpleDateFormat("dd/MM/yyyy")
+					.parse("01/02/1991"), 
 				deptIt
 			));
 			
 			pegawaiList.add(new Pegawai(
 				"789", 
 				"Cahyo", 
-				new SimpleDateFormat("dd/MM/yyyy").parse("28/02/1989"), 
+				new SimpleDateFormat("dd/MM/yyyy")
+					.parse("28/02/1989"), 
 				deptKeuangan
 			));
 			

@@ -9,8 +9,12 @@ public class Pegawai {
 	private Date tglLahir;
 	private Departemen departemen;
 	
+	public Pegawai(String ktp, String nama) {
+		this.ktp = ktp;
+		this.nama = nama;
+	}
+	
 	public Pegawai(String ktp, String nama, Date tglLahir, Departemen departemen) {
-		super();
 		this.ktp = ktp;
 		this.nama = nama;
 		this.tglLahir = tglLahir;
@@ -33,7 +37,8 @@ public class Pegawai {
 		return departemen;
 	}
 	
-	public String __toString() {
-		return "[" + ktp + ", " + nama + "]";
+	@Override
+	public String toString() {
+		return "[" + ktp + ", " + nama + "]\n";
 	}
 }

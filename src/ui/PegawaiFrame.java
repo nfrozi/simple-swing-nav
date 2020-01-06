@@ -5,29 +5,26 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentEvent;
+import java.awt.event.ComponentListener;
+
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JTextArea;
-import javax.swing.SwingConstants;
 
 import model.Pegawai;
-import services.AppService;
-import services.FrameService;
-import services.PegawaiService;
-import services.ServiceManager;
+import repo.PegawaiRepository;
 
-public class PegawaiFrame extends JFrame implements ActionListener {
+public class PegawaiFrame extends JFrame implements ActionListener, ComponentListener {
 	
-//	private FrameService pegawaiService;
+	private PegawaiRepository pegawaiRepo;
 	private JButton btnGotoMain;
 	private JTextArea txtDataContainer;
 	
 	public PegawaiFrame() {
 		super("Pegawai Frame");
 		
-//		pegawaiService = 
-//			ServiceManager.get(PegawaiService.class);
+		pegawaiRepo = new PegawaiRepository();
 		
 		configureFrame();
 		initComponents();
@@ -40,11 +37,13 @@ public class PegawaiFrame extends JFrame implements ActionListener {
 	}
 	
 	private void initComponents() {
+		addComponentListener(this);
+		
 		btnGotoMain = new JButton("Back to Main");
 		btnGotoMain.addActionListener(this);
 		
 		txtDataContainer = new JTextArea();
-		addDataToContainer();
+		txtDataContainer.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 20));
 		
 		add(txtDataContainer, BorderLayout.CENTER);
 		add(btnGotoMain, BorderLayout.NORTH);
@@ -52,15 +51,13 @@ public class PegawaiFrame extends JFrame implements ActionListener {
 		pack();
 	}
 	
-	private void addDataToContainer() {
+	private void loadDataToContainer() {
 		StringBuffer pegawaiList = new StringBuffer();
-//		FrameService service = ServiceManager.get(PegawaiService.class);
-				
-//		FrameService service = ServiceManager
-//			.get(PegawaiService.class);
-		
-		for (Pegawai pegawai : ServiceManager.getPegawaiService().getData()) {
-			pegawaiList.append(pegawai);
+
+		int no = 1;
+		for (Pegawai pegawai : pegawaiRepo.getData()) {
+			pegawaiList.append(no + " " + pegawai);
+			no++;
 		}
 		
 		txtDataContainer.setText(pegawaiList.toString());
@@ -69,11 +66,27 @@ public class PegawaiFrame extends JFrame implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(btnGotoMain.getText())) {
-			ServiceManager.getPegawaiService().hideFrame();
-			ServiceManager.getAppService().showFrame();
+			String baru = String.valueOf(Math.round(Math.random() * 100));
 			
-//			ServiceManager.get(PegawaiService.class).hideFrame();
-//			ServiceManager.get(AppService.class).showFrame();
+			pegawaiRepo.getData().add(new Pegawai(
+				baru, 
+				"Data Baru " + baru
+			));
+			App.switchFrame(this, MainFrame.class);
 		}
 	}
+
+	@Override
+	public void componentResized(ComponentEvent e) {}
+
+	@Override
+	public void componentMoved(ComponentEvent e) {}
+
+	@Override
+	public void componentShown(ComponentEvent e) {
+		loadDataToContainer();
+	}
+
+	@Override
+	public void componentHidden(ComponentEvent e) {}
 }
